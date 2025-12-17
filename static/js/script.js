@@ -34,7 +34,17 @@ startBtn.addEventListener('click', async () => {
             return;
         }
 
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // IMPORTANT: Request raw audio. Phones try to "clean" audio for speech, 
+        // which removes low-frequency heart sounds. We must disable all those features.
+        const constraints = {
+            audio: {
+                echoCancellation: false,
+                autoGainControl: false,
+                noiseSuppression: false,
+                channelCount: 1
+            }
+        };
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         source = audioContext.createMediaStreamSource(mediaStream);
