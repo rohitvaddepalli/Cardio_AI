@@ -1,10 +1,12 @@
 import os
 import numpy as np
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 from scipy.io import wavfile
 from scipy.signal import butter, sosfilt, decimate, find_peaks, hilbert
 
 app = Flask(__name__)
+CORS(app) # Enable CORS for all routes (allows cross-origin requests if you host frontend separately)
 
 # Ensure the uploads directory exists
 UPLOAD_FOLDER = 'uploads'
@@ -96,6 +98,11 @@ def analyze_heart_signal(filepath):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/health')
+def health():
+    # Lightweight endpoint for keep-alive pings
+    return jsonify({"status": "awake"}), 200
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
