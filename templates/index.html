@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -40,6 +42,15 @@
                     <div class="result-value" id="statusValue">--</div>
                     <div class="result-sub" id="variationValue"></div>
                 </div>
+                <!-- New cards for detailed analysis -->
+                <div class="result-card full-width">
+                    <div class="result-label">Analysis Reason</div>
+                    <div class="result-text" id="reasonValue">--</div>
+                </div>
+                <div class="result-card full-width">
+                    <div class="result-label">Recommendation</div>
+                    <div class="result-text" id="recommendationValue">--</div>
+                </div>
             </div>
 
             <div id="loading" class="loading" style="display: none;">
@@ -51,4 +62,5 @@
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>

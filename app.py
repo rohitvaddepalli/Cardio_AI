@@ -84,11 +84,18 @@ def analyze_heart_signal(filepath):
         status = "Regular"
         if variation_percent > 15:
             status = "Irregular"
+            reason = f"Significant variation in time between heartbeats detected ({round(variation_percent, 1)}% variability). This can indicate conditions like arrhythmia."
+            recommendation = "We recommend consulting a healthcare professional for a more comprehensive ECG/EKG test. Retake the measurement in a quiet environment to rule out noise."
+        else:
+            reason = f"Heartbeats are consistent with low variability ({round(variation_percent, 1)}%)."
+            recommendation = "Continue monitoring regularly. Maintain a healthy lifestyle."
 
         return {
             "bpm": round(bpm, 1),
             "status": status,
-            "variation": round(variation_percent, 2)
+            "variation": round(variation_percent, 2),
+            "reason": reason,
+            "recommendation": recommendation
         }
 
     except Exception as e:

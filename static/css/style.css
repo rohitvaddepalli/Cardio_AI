@@ -22,7 +22,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: 
+    background-image:
         radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.2) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 20%);
 }
@@ -45,6 +45,7 @@ h1 {
     font-size: 2.5rem;
     font-weight: 600;
     background: linear-gradient(90deg, #fff, var(--primary-color));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
@@ -86,8 +87,8 @@ canvas {
     font-size: 0.8rem;
     padding: 4px 10px;
     border-radius: 12px;
-    background: rgba(0,0,0,0.5);
-    color: rgba(255,255,255,0.7);
+    background: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     transition: all 0.3s ease;
 }
 
@@ -113,7 +114,7 @@ canvas {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn:disabled {
@@ -163,6 +164,17 @@ canvas {
     color: var(--primary-color);
 }
 
+.result-card.full-width {
+    grid-column: 1 / -1;
+    text-align: left;
+}
+
+.result-text {
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
 .result-sub {
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.4);
@@ -188,10 +200,19 @@ canvas {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -247,6 +247,11 @@ async function sendAudioToBackend(blob) {
             }
 
             variationValue.textContent = `Interval Variation: ${result.variation}%`;
+
+            // Update reason and recommendation
+            document.getElementById('reasonValue').textContent = result.reason || 'No details available.';
+            document.getElementById('recommendationValue').textContent = result.recommendation || 'No recommendation available.';
+
             recordingStatus.textContent = 'Analysis Complete';
         } else {
             alert('Analysis Error: ' + (result.error || 'Unknown error'));
