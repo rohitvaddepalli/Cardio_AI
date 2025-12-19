@@ -74,28 +74,60 @@ def analyze_heart_signal(filepath):
         peak_times = peaks / fs
         intervals = np.diff(peak_times)
         
+        # Calculate medical metrics for detailed explanation
+        variation_percent = 0
+        mean_rr_ms = 0
+        sdnn_ms = 0
+        
         if len(intervals) > 0:
             mean_interval = np.mean(intervals)
             std_interval = np.std(intervals)
             variation_percent = (std_interval / mean_interval) * 100
-        else:
-            variation_percent = 0
+            
+            # Convert to milliseconds for medical standard reporting
+            mean_rr_ms = mean_interval * 1000
+            sdnn_ms = std_interval * 1000
 
         status = "Regular"
         if variation_percent > 15:
             status = "Irregular"
-            reason = f"Significant variation in time between heartbeats detected ({round(variation_percent, 1)}% variability). This can indicate conditions like arrhythmia."
-            recommendation = "We recommend consulting a healthcare professional for a more comprehensive ECG/EKG test. Retake the measurement in a quiet environment to rule out noise."
+            reason = (
+                f"**High Variability Detected (Arrhythmia Risk):**\n"
+                f"The analysis detected significant inconsistency in the timing between your heartbeats. "
+                f"Your Beat-to-Beat Variability is **{round(variation_percent, 1)}%** (Normal is <15%). "
+                f"The Standard Deviation of NN intervals (SDNN), a key measure of heart rate variability, is **{round(sdnn_ms, 1)} ms**. "
+                f"Technically, this means your heart is not keeping a steady metronome-like pace."
+            )
+            recommendation = (
+                "**Actional Steps:**\n"
+                "1. **Rule out Noise:** Movement, talking, or a loose microphone can mimic irregularity. Sit down, relax for 2 minutes, hold your breath slightly, and record again.\n"
+                "2. **Check for Symptoms:** Do you feel palpitations, dizziness, or shortness of breath? If so, seek medical attention immediately.\n"
+                "3. **Consult a Professional:** If you consistently get this result in a quiet environment, we strongly recommend visiting a doctor for a 12-lead ECG/EKG to rule out Atrial Fibrillation or other arrhythmias."
+            )
         else:
-            reason = f"Heartbeats are consistent with low variability ({round(variation_percent, 1)}%)."
-            recommendation = "Continue monitoring regularly. Maintain a healthy lifestyle."
+            reason = (
+                f"**Consistent Rhythm Detected (Normal Sinus Rhythm):**\n"
+                f"Your heartbeats are spaced evenly with low variability (**{round(variation_percent, 1)}%**). "
+                f"The average time between beats is **{int(mean_rr_ms)} ms**, and the stability metric (SDNN) is **{round(sdnn_ms, 1)} ms**, indicating a stable cardiac cycle. "
+                "The signal shows no obvious signs of chaotic electrical activity."
+            )
+            recommendation = (
+                "**Advice:**\n"
+                "Your heart rhythm appears healthy and stable based on this sample. "
+                "To maintain this, continue with regular cardiovascular exercise, manage stress levels, and ensure adequate sleep. "
+                "Note: This tool is for screening purposes only. If you feel unwell despite this result, always trust your body and consult a doctor."
+            )
 
         return {
             "bpm": round(bpm, 1),
             "status": status,
             "variation": round(variation_percent, 2),
             "reason": reason,
-            "recommendation": recommendation
+            "recommendation": recommendation,
+            "details": {
+                "mean_rr_ms": round(mean_rr_ms, 1),
+                "sdnn_ms": round(sdnn_ms, 1)
+            }
         }
 
     except Exception as e:

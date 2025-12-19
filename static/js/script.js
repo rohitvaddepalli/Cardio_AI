@@ -248,9 +248,19 @@ async function sendAudioToBackend(blob) {
 
             variationValue.textContent = `Interval Variation: ${result.variation}%`;
 
-            // Update reason and recommendation
-            document.getElementById('reasonValue').textContent = result.reason || 'No details available.';
-            document.getElementById('recommendationValue').textContent = result.recommendation || 'No recommendation available.';
+            // Helper to format text with bolding and line breaks
+            const formatText = (text) => {
+                if (!text) return 'No details available.';
+                // Replace **text** with <strong>text</strong>
+                let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                // Replace newlines with <br>
+                formatted = formatted.replace(/\n/g, '<br>');
+                return formatted;
+            };
+
+            // Update reason and recommendation with formatting
+            document.getElementById('reasonValue').innerHTML = formatText(result.reason);
+            document.getElementById('recommendationValue').innerHTML = formatText(result.recommendation);
 
             recordingStatus.textContent = 'Analysis Complete';
         } else {
